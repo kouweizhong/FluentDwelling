@@ -1,0 +1,1 @@
+This is a direct copy of the FluentDwelling API built by SoapBox Automation at http://soapboxautomation.com/products/fluentdwelling/ with updates as I make them.
