@@ -20,6 +20,7 @@
 /// </header>
 #endregion
 
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
@@ -37,13 +38,35 @@ namespace SoapBox.FluentDwelling.Test
     [TestFixture]
     public class IntegrationTest
     {
-        const string COMPORT_NAME = "COM4";
-        static readonly DeviceId peerId = new DeviceId(0x13, 0x55, 0x05); // some other device on the network
+        private string _serialPort;
+        private static readonly DeviceId peerId = new DeviceId(0x13, 0x55, 0x05); // some other device on the network
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            string[] theSerialPortNames = System.IO.Ports.SerialPort.GetPortNames();
+            foreach (var serialPort in theSerialPortNames)
+            {
+                using (var plm = new Plm(serialPort))
+                {
+                    plm.GetInfo();
+                    if (!plm.Error)
+                    {
+                        _serialPort = serialPort;
+                    }
+                }
+            }
+
+            if (_serialPort == null)
+            {
+              throw new Exception("No PLM was found.  Please make sure your PLM is plugged in to power and your serial/USB port.");
+            }
+        }
 
         [Test]
         public void Integration_test_GetInfo()
         {
-            using (var plm = new Plm(COMPORT_NAME))
+            using (var plm = new Plm(_serialPort))
             {
                 var info = plm.GetInfo();
                 Assert.IsFalse(plm.Error);
@@ -59,7 +82,7 @@ namespace SoapBox.FluentDwelling.Test
         [Test]
         public void Integration_test_LED()
         {
-            using (var plm = new Plm(COMPORT_NAME))
+            using (var plm = new Plm(_serialPort))
             {
                 plm.Led
                     .EnableManualControl()
@@ -79,7 +102,7 @@ namespace SoapBox.FluentDwelling.Test
         [Test]
         public void Integration_test_AllLinkDatabase()
         {
-            using (var plm = new Plm(COMPORT_NAME))
+            using (var plm = new Plm(_serialPort))
             {
                 var database = plm.GetAllLinkDatabase();
                 Assert.IsFalse(plm.Error);
@@ -116,7 +139,7 @@ namespace SoapBox.FluentDwelling.Test
         {
             // This test requires a device at peerId attached to your Insteon Network
             // If you don't have one, just disable or disregard this test.
-            using (var plm = new Plm(COMPORT_NAME))
+            using (var plm = new Plm(_serialPort))
             {
                 DeviceBase device;
                 Assert.IsTrue(plm.Network
