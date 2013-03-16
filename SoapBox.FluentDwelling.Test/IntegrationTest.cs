@@ -38,35 +38,12 @@ namespace SoapBox.FluentDwelling.Test
     [TestFixture]
     public class IntegrationTest
     {
-        private string _serialPort;
         private static readonly DeviceId peerId = new DeviceId(0x13, 0x55, 0x05); // some other device on the network
-
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-            string[] theSerialPortNames = System.IO.Ports.SerialPort.GetPortNames();
-            foreach (var serialPort in theSerialPortNames)
-            {
-                using (var plm = new Plm(serialPort))
-                {
-                    plm.GetInfo();
-                    if (!plm.Error)
-                    {
-                        _serialPort = serialPort;
-                    }
-                }
-            }
-
-            if (_serialPort == null)
-            {
-              throw new Exception("No PLM was found.  Please make sure your PLM is plugged in to power and your serial/USB port.");
-            }
-        }
 
         [Test]
         public void Integration_test_GetInfo()
         {
-            using (var plm = new Plm(_serialPort))
+            using (var plm = new Plm())
             {
                 var info = plm.GetInfo();
                 Assert.IsFalse(plm.Error);
@@ -82,7 +59,7 @@ namespace SoapBox.FluentDwelling.Test
         [Test]
         public void Integration_test_LED()
         {
-            using (var plm = new Plm(_serialPort))
+            using (var plm = new Plm())
             {
                 plm.Led
                     .EnableManualControl()
@@ -102,7 +79,7 @@ namespace SoapBox.FluentDwelling.Test
         [Test]
         public void Integration_test_AllLinkDatabase()
         {
-            using (var plm = new Plm(_serialPort))
+            using (var plm = new Plm())
             {
                 var database = plm.GetAllLinkDatabase();
                 Assert.IsFalse(plm.Error);
@@ -139,7 +116,7 @@ namespace SoapBox.FluentDwelling.Test
         {
             // This test requires a device at peerId attached to your Insteon Network
             // If you don't have one, just disable or disregard this test.
-            using (var plm = new Plm(_serialPort))
+            using (var plm = new Plm())
             {
                 DeviceBase device;
                 Assert.IsTrue(plm.Network

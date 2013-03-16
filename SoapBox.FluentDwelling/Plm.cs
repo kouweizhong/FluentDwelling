@@ -39,6 +39,34 @@ namespace SoapBox.FluentDwelling
         /// serial port (or a virtual com port using the 
         /// FTDI chip VCP drivers).
         /// </summary>
+        public Plm()
+          : this(new SerialPortController(DiscoverComPort()))
+        { }
+
+        internal static string DiscoverComPort()
+        {
+          string[] theSerialPortNames = System.IO.Ports.SerialPort.GetPortNames();
+          foreach (var serialPort in theSerialPortNames)
+          {
+            using (var plm = new Plm(serialPort))
+            {
+              plm.GetInfo();
+              if (!plm.Error)
+              {
+                return serialPort;
+              }
+            }
+          }
+
+          throw new Exception("No PLM was found.  Please make sure your PLM is plugged in to power and your serial/USB port.");
+        }
+
+        /// <summary>
+        /// Creates a new object for reading from and writing
+        /// to an Powerline Modem (PLM) over a
+        /// serial port (or a virtual com port using the 
+        /// FTDI chip VCP drivers).
+        /// </summary>
         /// <param name="comPortName">Example: "COM4"</param>
         public Plm(string comPortName)
             : this(new SerialPortController(comPortName))
