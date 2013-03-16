@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BE8D69FF-0816-43FB-A871-F138DEE467EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SoapBox.FluentDwelling.Test</RootNamespace>
+    <AssemblyName>SoapBox.FluentDwelling.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\References\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Devices\TestDeviceHelper.cs" />
+    <Compile Include="Devices\TestDimmableLightingControl.cs" />
+    <Compile Include="Devices\TestDeviceBase.cs" />
+    <Compile Include="Devices\TestDeviceFactory.cs" />
+    <Compile Include="Devices\TestIrrigationControl.cs" />
+    <Compile Include="Devices\TestLightingControl.cs" />
+    <Compile Include="Devices\TestPoolAndSpaControl.cs" />
+    <Compile Include="Devices\TestSensorsActuators.cs" />
+    <Compile Include="Devices\TestWindowCoveringControl.cs" />
+    <Compile Include="IntegrationTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialPortScenario.cs" />
+    <Compile Include="TestAllLinkDatabase.cs" />
+    <Compile Include="TestIncomingMessageBuffer.cs" />
+    <Compile Include="TestInsteonId.cs" />
+    <Compile Include="TestPlm.cs" />
+    <Compile Include="TestPlmConfiguration.cs" />
+    <Compile Include="TestPlmInfo.cs" />
+    <Compile Include="TestPlmLed.cs" />
+    <Compile Include="TestPlmNetwork.cs" />
+    <Compile Include="TestPlmSetButton.cs" />
+    <Compile Include="TestPlmNetworkX10.cs" />
+    <Compile Include="TestStandardMessageReceivedArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoapBox.FluentDwelling\SoapBox.FluentDwelling.csproj">
+      <Project>{683A2EF1-850B-44AB-A5E4-9C8FE04009FE}</Project>
+      <Name>SoapBox.Insteon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

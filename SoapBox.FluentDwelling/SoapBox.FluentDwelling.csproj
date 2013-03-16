@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{683A2EF1-850B-44AB-A5E4-9C8FE04009FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SoapBox.FluentDwelling</RootNamespace>
+    <AssemblyName>SoapBox.FluentDwelling</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AllLinkingAction.cs" />
+    <Compile Include="AllLinkingCompletedArgs.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Devices\AccessControl.cs" />
+    <Compile Include="Devices\AutomotiveControl.cs" />
+    <Compile Include="Devices\BuiltInApplianceControl.cs" />
+    <Compile Include="Devices\ClimateControl.cs" />
+    <Compile Include="Devices\CommunicationControl.cs" />
+    <Compile Include="Devices\ComputerControl.cs" />
+    <Compile Include="Devices\EnergyManagement.cs" />
+    <Compile Include="Devices\GeneralizedController.cs" />
+    <Compile Include="Devices\HolidayControl.cs" />
+    <Compile Include="Devices\HomeEntertainmentControl.cs" />
+    <Compile Include="Devices\DeviceFactory.cs" />
+    <Compile Include="Devices\IrrigationControl.cs" />
+    <Compile Include="Devices\LightingControl.cs" />
+    <Compile Include="Devices\DimmableLightingControl.cs" />
+    <Compile Include="Devices\NetworkBridge.cs" />
+    <Compile Include="Devices\PetCareControl.cs" />
+    <Compile Include="Devices\PlumbingControl.cs" />
+    <Compile Include="Devices\PoolAndSpaControl.cs" />
+    <Compile Include="Devices\PoolAndSpaDevice.cs" />
+    <Compile Include="Devices\PoolAndSpaThermostatMode.cs" />
+    <Compile Include="Devices\SecurityHealthOrSafetyControl.cs" />
+    <Compile Include="Devices\SensorsActuators.cs" />
+    <Compile Include="Devices\SurveillanceControl.cs" />
+    <Compile Include="Devices\SwitchedLightingControl.cs" />
+    <Compile Include="Devices\TimekeepingControl.cs" />
+    <Compile Include="Devices\Toy.cs" />
+    <Compile Include="Devices\WindowCoveringControl.cs" />
+    <Compile Include="IncomingMessage.cs" />
+    <Compile Include="IncomingMessageBuffer.cs" />
+    <Compile Include="Devices\DeviceBase.cs" />
+    <Compile Include="DeviceId.cs" />
+    <Compile Include="DeviceMessage.cs" />
+    <Compile Include="ISerialPortController.cs" />
+    <Compile Include="Plm.cs" />
+    <Compile Include="PlmAllLinkDatabase.cs" />
+    <Compile Include="PlmAllLinkDatabaseRecord.cs" />
+    <Compile Include="PlmCommunicatorBase.cs" />
+    <Compile Include="PlmConfiguration.cs" />
+    <Compile Include="PlmException.cs" />
+    <Compile Include="PlmInfo.cs" />
+    <Compile Include="PlmLed.cs" />
+    <Compile Include="PlmNetwork.cs" />
+    <Compile Include="PlmNetworkX10.cs" />
+    <Compile Include="PlmSetButton.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialPortController.cs" />
+    <Compile Include="StandardMessageFlags.cs" />
+    <Compile Include="StandardMessageReceivedArgs.cs" />
+    <Compile Include="StandardMessageType.cs" />
+    <Compile Include="X10CommandReceivedArgs.cs" />
+    <Compile Include="X10UnitAddressedArgs.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
