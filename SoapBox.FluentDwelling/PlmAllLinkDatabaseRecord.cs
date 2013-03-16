@@ -30,11 +30,12 @@ namespace SoapBox.FluentDwelling
     public class PlmAllLinkDatabaseRecord
     {
         private readonly byte[] record;
+        public const int RecordSize = 10;
 
         internal PlmAllLinkDatabaseRecord(byte[] record)
         {
             if (record == null) throw new ArgumentNullException("record");
-            if (record.Length != 10) throw new ArgumentOutOfRangeException("record");
+            if (record.Length != RecordSize) throw new ArgumentOutOfRangeException("record");
             this.record = record;
             this.InUse = (record[2] & Constants.ALL_LINK_DB_FLAGS_RECORD_IN_USE) > 0;
             this.PlmIsMaster = (record[2] & Constants.ALL_LINK_DB_FLAGS_PLM_IS_MASTER) > 0;

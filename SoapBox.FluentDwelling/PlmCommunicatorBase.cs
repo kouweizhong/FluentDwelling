@@ -94,30 +94,42 @@ namespace SoapBox.FluentDwelling
             byte command1, byte command2)
         {
             sendStandardLengthMessage(toAddress, (byte)(flags | Constants.MSG_FLAGS_MAX_HOPS), command1, command2);
-            return waitForStandardMessageFrom(toAddress);
+            return waitForSpecificMessageFrom(toAddress, MSG_TYPE_RECV_STANDARD);
+        }
+
+        internal byte[] sendExtendedMessageAndWait4Response(DeviceId toAddress, byte flags,
+              byte command1, byte command2)
+        {
+          sendExtendedMessage(toAddress, (byte)(flags | Constants.MSG_FLAGS_MAX_HOPS | Constants.MSG_FLAGS_EXTENDED), command1, command2);
+          return waitForSpecificMessageFrom(toAddress, MSG_TYPE_RECV_EXTENDED);
         }
 
         internal byte[] waitForStandardMessageFrom(DeviceId peerAddress)
         {
-            byte[] result = null;
-            int tryCounter = 0;
-            DeviceId originator;
-            do
+            return waitForSpecificMessageFrom(peerAddress, MSG_TYPE_RECV_STANDARD);
+        }
+
+        internal byte[] waitForSpecificMessageFrom(DeviceId peerAddress, byte messageType)
+        {
+          byte[] result = null;
+          int tryCounter = 0;
+          DeviceId originator;
+          do
+          {
+            result = this.serialPortController.GetIncomingMessageOfType(messageType);
+            originator = DeviceMessage.DeviceMessageOriginator(result);
+            if (originator != peerAddress)
             {
-                result = this.serialPortController.GetIncomingMessageOfType(MSG_TYPE_RECV_STANDARD);
-                originator = DeviceMessage.DeviceMessageOriginator(result);
-                if (originator != peerAddress)
-                {
-                    queueReceivedMessage(result);
-                    result = null;
-                    tryCounter++;
-                    if (tryCounter > 3)
-                    {
-                        throw new TimeoutException("Timed out waiting for response from " + peerAddress.ToString());
-                    }
-                }
-            } while (result == null);
-            return result;
+              queueReceivedMessage(result);
+              result = null;
+              tryCounter++;
+              if (tryCounter > 3)
+              {
+                throw new TimeoutException("Timed out waiting for response from " + peerAddress.ToString());
+              }
+            }
+          } while (result == null);
+          return result;
         }
 
         internal void receiveAndQueueIncomingMessage()
@@ -151,6 +163,14 @@ namespace SoapBox.FluentDwelling
             sendCommandWithEchoAndAck(0x02, 0x62,
                 toAddress.IdHi, toAddress.IdMiddle, toAddress.IdLo,
                 flags, command1, command2);
+        }
+
+        internal void sendExtendedMessage(DeviceId toAddress, byte flags,
+              byte command1, byte command2)
+        {
+          sendCommandWithEchoAndAck(0x02, 0x62,
+                                    toAddress.IdHi, toAddress.IdMiddle, toAddress.IdLo,
+                                    flags, command1, command2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         /// <summary>

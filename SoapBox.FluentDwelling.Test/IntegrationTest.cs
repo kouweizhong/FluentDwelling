@@ -20,10 +20,8 @@
 /// </header>
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using System.Threading;
 using System.Diagnostics;
@@ -53,7 +51,8 @@ namespace SoapBox.FluentDwelling.Test
                 Assert.AreNotEqual(0, info.DeviceSubcategoryCode);
                 Assert.AreNotEqual(0, info.FirmwareVersion);
                 Assert.AreEqual("Network Bridges", info.DeviceCategory);
-                Assert.AreEqual("PowerLinc - USB (Dual Band) [2413U]", info.DeviceSubcategory);
+                const string pattern = "PowerLinc - (Serial|USB) \\(Dual Band\\) \\[2413[SU]\\]";
+                Assert.IsTrue(new Regex(pattern).IsMatch(info.DeviceSubcategory));
             }
         }
 
@@ -85,6 +84,30 @@ namespace SoapBox.FluentDwelling.Test
                 var database = plm.GetAllLinkDatabase();
                 Assert.IsFalse(plm.Error);
                 Assert.IsNotNull(database);
+
+                foreach (var record in database.Records)
+                {
+                  Debug.Print("Device Id: {0}", record.DeviceId);
+                  DeviceBase device;
+                  if (plm.Network.TryConnectToDevice(record.DeviceId, out device))
+                  {
+                    Debug.Print("\tAll Link Database");
+                    foreach (var subRecord in device.GetAllLinkDatabase().Records)
+                    {
+                      Debug.Print("\t\tDevice ID: {0}", subRecord.DeviceId);
+                    }
+                    if (!device.AllLinkDatabase.Records.Any())
+                    {
+                      Debug.Print("\t\tNot paired with any devices!");
+                    }
+                    Debug.Print("\tPeer Device Category: {0}", device.DeviceCategory);
+                    Debug.Print("\tPeer Device Subcategory: {0}", device.DeviceSubcategory);
+                  }
+                  else
+                  {
+                     Debug.Print("\tFailed to connect to device!");
+                  }
+                }
             }
         }
 

@@ -28,6 +28,32 @@ using SoapBox.FluentDwelling.Devices;
 
 namespace SoapBox.FluentDwelling
 {
+
+  public static class Extensions
+  {
+    /// <summary>
+    /// Get the array slice between the two indexes.
+    /// ... Inclusive for start index, exclusive for end index.
+    /// </summary>
+    public static T[] Slice<T>(this T[] source, int start, int end)
+    {
+      // Handles negative ends.
+      if (end < 0)
+      {
+        end = source.Length + end;
+      }
+      int len = end - start;
+
+      // Return new array.
+      T[] res = new T[len];
+      for (int i = 0; i < len; i++)
+      {
+        res[i] = source[i + start];
+      }
+      return res;
+    }
+  }
+
     /// <summary>
     /// Represents the network interface on the
     /// PLM (both RF and power-line).
@@ -151,6 +177,31 @@ namespace SoapBox.FluentDwelling
             }
             device = result;
             return result != null;
+        }
+
+
+        public bool TryGetDeviceAllLinkDatabase(DeviceBase device)
+        {
+            if (device == null) throw new ArgumentNullException("device");
+            var records = new List<PlmAllLinkDatabaseRecord>();
+
+            plm.exceptionHandler(() =>
+                                   {
+                                     plm.sendExtendedMessageAndWait4Response(device.DeviceId, Constants.MSG_FLAGS_DIRECT, 0x2F, 0x00);
+                                     while (true) //this will bail when 0x6A returns a NACK
+                                     {
+                                       var record = plm.waitForSpecificMessageFrom(device.DeviceId, 0x51);
+                                       var data = record.Slice(14, 24);
+                                       if (data[4] == 0 && data[5] == 0 && data[6] == 0)
+                                       {
+                                         break;
+                                       }
+                                       records.Add(new PlmAllLinkDatabaseRecord(data));
+                                     }
+                                   });
+          device.AllLinkDatabase = new PlmAllLinkDatabase(records);
+
+          return true;
         }
 
         /// <summary>

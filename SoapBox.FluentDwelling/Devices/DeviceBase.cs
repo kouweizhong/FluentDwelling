@@ -82,7 +82,9 @@ namespace SoapBox.FluentDwelling.Devices
             }
         }
 
-        /// <summary>
+      public PlmAllLinkDatabase AllLinkDatabase { get; set; }
+
+      /// <summary>
         /// Attempts to send a ping message to the device, and 
         /// returns true if the device responded with an ACK message.
         /// </summary>
@@ -90,6 +92,13 @@ namespace SoapBox.FluentDwelling.Devices
         {
             return this.Plm.Network
                 .SendStandardCommandToAddress(this.DeviceId, 0x0F, 0x00);
+        }
+
+        public PlmAllLinkDatabase GetAllLinkDatabase()
+        {
+          Plm.Network.TryGetDeviceAllLinkDatabase(this);
+
+          return AllLinkDatabase;
         }
     }
 }
